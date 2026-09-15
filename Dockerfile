@@ -7,8 +7,11 @@ FROM ${HERMES_IMAGE}
 USER root
 WORKDIR /opt/hermes-mcp
 
-COPY package.json package-lock.json ./
-RUN npm ci --omit=dev --no-audit --fetch-retries=5 && npm cache clean --force
+# npm ci when a lockfile is committed, plain install otherwise.
+COPY package.json package-lock.json* ./
+RUN if [ -f package-lock.json ]; then npm ci --omit=dev --no-audit --fetch-retries=5; \
+    else npm install --omit=dev --no-audit --fetch-retries=5; fi && \
+    npm cache clean --force
 
 COPY src/ ./src/
 
