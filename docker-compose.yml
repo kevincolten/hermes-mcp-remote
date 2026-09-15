@@ -1,0 +1,28 @@
+# Example stack. On Coolify, paste this as the service's Docker Compose and
+# let it generate SERVICE_PASSWORD_* values. The dashboard is bound to a
+# Tailscale IP here; the MCP port is not published at all, it is meant to be
+# reached over the Docker network by whatever fronts it.
+services:
+  hermes:
+    image: ghcr.io/kevincolten/hermes-mcp-remote:latest
+    restart: unless-stopped
+    command: gateway run
+    shm_size: 1gb
+    ports:
+      - "100.83.15.84:9119:9119"
+    volumes:
+      - hermes_data:/opt/data
+    environment:
+      - HERMES_DASHBOARD=1
+      - HERMES_DASHBOARD_BASIC_AUTH_USERNAME=kevin
+      - HERMES_DASHBOARD_BASIC_AUTH_PASSWORD=${SERVICE_PASSWORD_DASHBOARD}
+      - HERMES_DASHBOARD_BASIC_AUTH_SECRET=${SERVICE_PASSWORD_64_DASHSECRET}
+      - HERMES_MCP_TOKEN=${SERVICE_PASSWORD_64_MCPTOKEN}
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+          cpus: "2.0"
+
+volumes:
+  hermes_data:

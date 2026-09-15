@@ -1,0 +1,7 @@
+#!/command/with-contenv sh
+# shellcheck shell=sh
+# $1 = run exit code. Exit 125 tells s6-supervise "do not restart".
+if [ -z "${HERMES_MCP_TOKEN:-}" ]; then
+    exit 125
+fi
+exit 0

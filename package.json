@@ -1,0 +1,28 @@
+{
+  "name": "hermes-mcp-remote",
+  "version": "0.1.0",
+  "description": "Control a Hermes Agent (Nous Research) instance from claude.ai and other MCP clients: exposes the hermes CLI over MCP Streamable HTTP with bearer auth, packaged as a drop-in replacement for the official Docker image",
+  "main": "src/server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env src/server.js",
+    "test": "node test/smoke.js"
+  },
+  "bin": {
+    "hermes-mcp-remote": "src/server.js"
+  },
+  "keywords": ["hermes", "hermes-agent", "mcp", "claude", "connector"],
+  "author": "Kevin Colten",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "zod": "^3.24.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kevincolten/hermes-mcp-remote.git"
+  },
+  "engines": {
+    "node": ">=20.6"
+  }
+}
