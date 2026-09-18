@@ -1,0 +1,10 @@
+#!/command/with-contenv sh
+# shellcheck shell=sh
+# $1 = run exit code. Exit 125 tells s6-supervise "do not restart".
+if [ "${API_SERVER_ENABLED:-}" != "true" ] && [ "${API_SERVER_ENABLED:-}" != "1" ]; then
+    exit 125
+fi
+if [ -z "${API_SERVER_KEY:-}" ]; then
+    exit 125
+fi
+exit 0
