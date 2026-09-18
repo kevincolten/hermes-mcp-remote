@@ -25,5 +25,15 @@ RUN mkdir -p /etc/s6-overlay/s6-rc.d/hermes-mcp/dependencies.d && \
     touch /etc/s6-overlay/s6-rc.d/user/contents.d/hermes-mcp && \
     chmod -R a+rX,go-w /opt/hermes-mcp
 
+# s6 service: the OpenAI-compatible gateway API (hermes serve). The base image
+# supervises the gateway and dashboard but never starts this one, so the
+# dashboard reports it disconnected. Same gating pattern as hermes-mcp.
+COPY --chmod=0755 s6/api-server/run /etc/s6-overlay/s6-rc.d/api-server/run
+COPY --chmod=0755 s6/api-server/finish /etc/s6-overlay/s6-rc.d/api-server/finish
+COPY s6/api-server/type /etc/s6-overlay/s6-rc.d/api-server/type
+RUN mkdir -p /etc/s6-overlay/s6-rc.d/api-server/dependencies.d && \
+    touch /etc/s6-overlay/s6-rc.d/api-server/dependencies.d/base && \
+    touch /etc/s6-overlay/s6-rc.d/user/contents.d/api-server
+
 WORKDIR /opt/hermes
-EXPOSE 8788
+EXPOSE 8788 8642
